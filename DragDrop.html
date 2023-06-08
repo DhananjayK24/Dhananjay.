@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      body {
+        background-color: #f2f2f2;
+      }
+
+      .container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: flex-start;
+        align-items: flex-start;
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+      }
+
+      .item {
+        background-color: #eee;
+        padding: 10px;
+        margin-bottom: 5px;
+        cursor: grab;
+      }
+
+      .item:hover {
+        background-color: #ddd;
+      }
+
+      .right-container {
+        width: 300px;
+        height: 300px;
+        border: 1px solid #ccc;
+        padding: 10px;
+        margin-left: 20px;
+        background-color: #fff;
+      }
+
+      .success-message {
+        color: green;
+        margin-top: 10px;
+        display: none;
+        text-align: center;
+        background-color: #f2f2f2;
+        padding: 10px;
+        border-radius: 5px;
+      }
+
+      .button-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 10px;
+      }
+
+      button {
+        margin-right: 10px;
+        background-color: #eee;
+        padding: 5px 10px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+
+      button:hover {
+        background-color: #ddd;
+      }
+
+      img {
+        width: "80";
+        height: "50";
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="left-container" id="leftContainer">
+        <div class="item" draggable="true">
+          <img
+            src="https://cdn.redmondpie.com/wp-content/uploads/2010/06/iPhone4CameraSample3.jpg"
+            alt="Product 1"
+            width="80"
+            height="50"
+          />
+        </div>
+        <div class="item" draggable="true">
+          <p>Product 2</p>
+        </div>
+        <div class="item" draggable="true">
+          <img
+            src="https://e1.pxfuel.com/desktop-wallpaper/967/383/desktop-wallpaper-200-3840x2160-resolution-sample-thumbnail.jpg"
+            alt="Product 3"
+            width="80"
+            height="50"
+          />
+        </div>
+        <div class="item" draggable="true">
+          <p>Product 4</p>
+        </div>
+      </div>
+      <div class="right-container" id="rightContainer"></div>
+    </div>
+    <div class="success-message" id="successMessage">
+      Item successfully dropped!
+    </div>
+
+    <div class="button-container">
+      <button onclick="resetContainers()">Reset</button>
+    </div>
+
+    <script>
+      // Get the left and right containers
+      const leftContainer = document.getElementById("leftContainer");
+      const rightContainer = document.getElementById("rightContainer");
+
+      // Add event listeners to the items
+      const items = leftContainer.getElementsByClassName("item");
+      for (const item of items) {
+        item.addEventListener("dragstart", dragStart);
+      }
+
+      // Store the dragged item
+      let draggedItem = null;
+      function dragStart(e) {
+        draggedItem = this;
+        e.dataTransfer.setData("text/plain", null);
+      }
+
+      // Add event listeners to the right container
+      rightContainer.addEventListener("dragover", dragOver);
+      rightContainer.addEventListener("drop", dragDrop);
+
+      // Prevent default behavior
+      function dragOver(e) {
+        e.preventDefault();
+      }
+
+      // Move the dragged item to the right container when dropped
+      function dragDrop() {
+        rightContainer.appendChild(draggedItem);
+        showSuccessMessage();
+      }
+
+      // Reset the containers to their original state
+      function resetContainers() {
+        rightContainer.innerHTML = "";
+        leftContainer.innerHTML = `
+        <div class="item" draggable="true">
+          <img
+            src="https://cdn.redmondpie.com/wp-content/uploads/2010/06/iPhone4CameraSample3.jpg"
+            alt="Product 1"
+            width="80"
+            height="50"
+          />
+        </div>
+        <div class="item" draggable="true">
+          <p>Product 2</p>
+        </div>
+        <div class="item" draggable="true">
+          <img
+            src="https://e1.pxfuel.com/desktop-wallpaper/967/383/desktop-wallpaper-200-3840x2160-resolution-sample-thumbnail.jpg"
+            alt="Product 3"
+            width="80"
+            height="50"
+          />
+        </div>
+        <div class="item" draggable="true">
+          <p>Product 4</p>
+        </div>
+      `;
+        hideSuccessMessage();
+      }
+
+      // Show success message
+      function showSuccessMessage() {
+        const successMessage = document.getElementById("successMessage");
+        successMessage.style.display = "block";
+      }
+
+      // Hide success message
+      function hideSuccessMessage() {
+        const successMessage = document.getElementById("successMessage");
+        successMessage.style.display = "none";
+      }
+    </script>
+  </body>
+</html>
+
+<!-- Unfortunately, sometimes you may find yourself 
+facing an issue with the drag and drop feature. 
+If this happens, the first thing you should try is 
+refreshing the page. -->
